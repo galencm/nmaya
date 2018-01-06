@@ -19,15 +19,15 @@
         Destroy the arrangement
     </destructor>
     
-    <mime_type>
+    <method name = "mime_type">
         Return mime_type
         <return type = "string" />
-    </mime_type>
+    </method>
 
-    <content>
+    <method name = "content">
         Returns the content, and pass ownership to the
         caller. The caller must destroy the content when finished with it.
         <return type = "zchunk" fresh = "1" />
-    </content>
+    </method>
 
 </class>
