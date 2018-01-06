@@ -11,6 +11,8 @@
     A library for arranging stuff
     <constructor>
         Create a new arrangement
+        <argument name = "mime_type" type = "string"/>
+        <argument name = "content" type = "zchunk" />
     </constructor>
     
     <destructor>
