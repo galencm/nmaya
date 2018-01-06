@@ -1,0 +1,14 @@
+<project 
+    name = "nmaya"
+    description = "A protocol for arranging stuff"
+    script = "zproject.gsl"
+    email = "galencm@fastmail.com"
+    >
+    <include filename = "license.xml" />
+    <use project = "czmq" />
+    <version major = "0" minor = "1" patch = "0" />
+    
+    <class name = "nmaya" />
+    <class name = "nmaya_arrangement" />
+
+</project>
