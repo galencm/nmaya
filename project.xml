@@ -10,5 +10,6 @@
     
     <class name = "nmaya" />
     <class name = "nmaya_arrangement" />
+    <target name = "python" />
 
 </project>
