@@ -126,3 +126,6 @@ bindings/qt/selftest/selftest
 
 # editor backups
 *~
+
+# hydra directory
+.hydra
