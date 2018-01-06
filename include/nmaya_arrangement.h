@@ -1,5 +1,5 @@
 /*  =========================================================================
-    nmaya_arrangement - class description
+    nmaya_arrangement - arrangement of stuff
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of zbroker, the ZeroMQ broker project.
@@ -25,12 +25,23 @@ extern "C" {
 //  *** Draft method, for development use, may change without warning ***
 //  Create a new arrangement
 NMAYA_EXPORT nmaya_arrangement_t *
-    nmaya_arrangement_new (void);
+    nmaya_arrangement_new (const char *mime_type, zchunk_t *content);
+//    nmaya_arrangement_new (void);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Destroy the arrangement
 NMAYA_EXPORT void
     nmaya_arrangement_destroy (nmaya_arrangement_t **self_p);
+
+//  *** Draft method, for development use, may change without warning ***
+//  Return mime_type
+const char *
+    nmaya_arrangement_mime_type (nmaya_arrangement_t *self);
+
+//  *** Draft method, for development use, may change without warning ***
+//  Return content
+zchunk_t *
+    nmaya_arrangement_content (nmaya_arrangement_t *self);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Self test of this class.

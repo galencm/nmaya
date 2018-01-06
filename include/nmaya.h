@@ -1,5 +1,5 @@
 /*  =========================================================================
-    nmaya - class description
+    nmaya - A library for arranging stuff
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of zbroker, the ZeroMQ broker project.
