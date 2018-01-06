@@ -1,5 +1,5 @@
 /*  =========================================================================
-    maya_arrangement - arrangement of stuff
+    nmaya_arrangement - arrangement of stuff
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of zbroker, the ZeroMQ broker project.
@@ -12,18 +12,18 @@
 
 /*
 @header
-    maya_arrangement - arrangement of stuff
+    nmaya_arrangement - arrangement of stuff
 @discuss
 @end
 */
 
-#include "maya_classes.h"
+#include "nmaya_classes.h"
 
 #define ID_SIZE     40          //  Size of SHA1 digest as text string
 
 //  Structure of our class
 
-struct _maya_arrangement_t {
+struct _nmaya_arrangement_t {
     //int filler;     //  Declare class properties here
     char *mime_type;            //  MIME type
     zchunk_t *content;          //  Content chunk
@@ -33,13 +33,13 @@ struct _maya_arrangement_t {
 
 
 //  --------------------------------------------------------------------------
-//  Create a new maya_arrangement
+//  Create a new nmaya_arrangement
 
-maya_arrangement_t *
-maya_arrangement_new (const char *mime_type, zchunk_t *content)
+nmaya_arrangement_t *
+nmaya_arrangement_new (const char *mime_type, zchunk_t *content)
 {
 
-    maya_arrangement_t *self = (maya_arrangement_t *) zmalloc (sizeof (maya_arrangement_t));
+    nmaya_arrangement_t *self = (nmaya_arrangement_t *) zmalloc (sizeof (nmaya_arrangement_t));
     assert (self);
     //  Initialize class properties here
     self->mime_type = strdup (mime_type);
@@ -52,14 +52,14 @@ maya_arrangement_new (const char *mime_type, zchunk_t *content)
 
 
 //  --------------------------------------------------------------------------
-//  Destroy the maya_arrangement
+//  Destroy the nmaya_arrangement
 
 void
-maya_arrangement_destroy (maya_arrangement_t **self_p)
+nmaya_arrangement_destroy (nmaya_arrangement_t **self_p)
 {
     assert (self_p);
     if (*self_p) {
-        maya_arrangement_t *self = *self_p;
+        nmaya_arrangement_t *self = *self_p;
         //  Free class properties here
         //  Free object itself
         free (self);
@@ -71,7 +71,7 @@ maya_arrangement_destroy (maya_arrangement_t **self_p)
 //  Return the arrangement mime_type
 
 const char *
-maya_arrangement_mime_type (maya_arrangement_t *self)
+nmaya_arrangement_mime_type (nmaya_arrangement_t *self)
 {
     assert (self);
     return self->mime_type;
@@ -81,7 +81,7 @@ maya_arrangement_mime_type (maya_arrangement_t *self)
 //  Return the arrangement content
 
 zchunk_t *
-maya_arrangement_content (maya_arrangement_t *self)
+nmaya_arrangement_content (nmaya_arrangement_t *self)
 {
     assert (self);
     if (self->content)
@@ -107,15 +107,15 @@ maya_arrangement_content (maya_arrangement_t *self)
 #define SELFTEST_DIR_RW "src/selftest-rw"
 
 void
-maya_arrangement_test (bool verbose)
+nmaya_arrangement_test (bool verbose)
 {
-    printf (" * maya_arrangement: ");
+    printf (" * nmaya_arrangement: ");
 
     //  @selftest
     //  Simple create/destroy test
-    maya_arrangement_t *self = maya_arrangement_new ("*/*", zchunk_new (NULL,0));
+    nmaya_arrangement_t *self = nmaya_arrangement_new ("*/*", zchunk_new (NULL,0));
     assert (self);
-    maya_arrangement_destroy (&self);
+    nmaya_arrangement_destroy (&self);
     //  @end
     printf ("OK\n");
 }
