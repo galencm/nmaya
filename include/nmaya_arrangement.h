@@ -26,7 +26,6 @@ extern "C" {
 //  Create a new arrangement
 NMAYA_EXPORT nmaya_arrangement_t *
     nmaya_arrangement_new (const char *mime_type, zchunk_t *content);
-//    nmaya_arrangement_new (void);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Destroy the arrangement
