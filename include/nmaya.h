@@ -38,8 +38,8 @@ NMAYA_EXPORT void
 //  *** Draft method, for development use, may change without warning ***
 //  Start node.
 //  Returns 0 if OK, -1 if it wasn't possible to start the node.
-NMAYA_EXPORT int
-    nmaya_start (nmaya_t *self);
+// NMAYA_EXPORT int
+//     nmaya_start (nmaya_t *self);
 
 //  *** Draft method, for development use, may change without warning ***
 //  Return specic item from specified arrangement

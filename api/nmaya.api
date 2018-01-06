@@ -18,13 +18,13 @@
     <destructor>
         Destructor, destroys a Nmaya node.
     </destructor>
-
+    <!--
     <method name = "start">
         Start node. 
         Returns 0 if OK, -1 if it wasn't possible to start the node.
         <return type = "integer" />
     </method>
-
+    -->
     <method name = "pluck">
         Return specic item from specified arrangement
         <argument name = "arrangement key" type = "string" />
