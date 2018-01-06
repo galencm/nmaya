@@ -1,5 +1,5 @@
 /*  =========================================================================
-    nmaya - class description
+    nmaya - A library for arranging stuff
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of zbroker, the ZeroMQ broker project.
@@ -12,7 +12,7 @@
 
 /*
 @header
-    nmaya -
+    nmaya - A library for arranging stuff
 @discuss
 @end
 */
@@ -22,7 +22,8 @@
 //  Structure of our class
 
 struct _nmaya_t {
-    int filler;     //  Declare class properties here
+    //int filler;     //  Declare class properties here
+    char *directory;
 };
 
 
@@ -30,10 +31,14 @@ struct _nmaya_t {
 //  Create a new nmaya
 
 nmaya_t *
-nmaya_new (void)
+nmaya_new (const char *directory)
 {
+    if (directory == NULL)
+        directory = ".hydra/posts";
+
     nmaya_t *self = (nmaya_t *) zmalloc (sizeof (nmaya_t));
     assert (self);
+    self->directory = strdup (directory);
     //  Initialize class properties here
     return self;
 }
@@ -53,6 +58,76 @@ nmaya_destroy (nmaya_t **self_p)
         free (self);
         *self_p = NULL;
     }
+}
+
+//  --------------------------------------------------------------------------
+//  Pluck an item from an arrangment
+
+nmaya_arrangement_t *
+    nmaya_pluck (nmaya_t *self, const char *arrangement_key, int position)
+{
+    nmaya_arrangement_t *plucked = NULL;
+    zconfig_t *post = NULL;
+    //zconfig_t *post = zconfig_new ("root", NULL);
+    zdir_t *directory = zdir_new (self->directory, "-");
+    zlist_t *files = zdir_list (directory);
+    zhashx_t *arrangement_index = zhashx_new();
+    zfile_t *file = (zfile_t *) zlist_first (files);
+
+    zdir_print (directory,4);
+
+    while (file) {
+        printf("loading: %s\n", zfile_filename (file, NULL));
+        post = zconfig_load ( zfile_filename (file, NULL));
+        // zconfig_print (post);
+        printf("key:     %s\n", zconfig_get (post, arrangement_key, NULL));
+        printf("value:   %s\n", zfile_filename (file, NULL));
+        printf("\n");
+        zhashx_insert (arrangement_index, zconfig_get (post, arrangement_key, NULL), zfile_filename (file, NULL));
+        file = (zfile_t *) zlist_next (files);
+    }
+
+    zlistx_t *keys = zhashx_keys (arrangement_index);
+    zlistx_sort (keys);
+
+    const char *search_key = (const char*) zlistx_first (keys);
+    int count = 0;
+    printf("%d %s\n", count, search_key);
+
+    while (count < position && search_key) {
+        search_key = (const char*) zlistx_next (keys);
+        count++;
+        printf("%d %s\n", count, search_key);
+    }
+
+    if (search_key){
+
+        post = zconfig_load ( zhashx_lookup(arrangement_index, search_key));
+        zconfig_print (post);
+
+        char *blob_path = zconfig_get (post, "/post/location", NULL);
+        //chop off 'posts/' +5
+        char* blob_fullpath = zsys_sprintf ("%s%s", self->directory, blob_path+5);
+        printf("blob fullpath:   %s\n", blob_fullpath);
+
+        plucked = nmaya_arrangement_new(zconfig_get (post, "/post/mime-type", NULL), zchunk_slurp(blob_fullpath,0));
+        zstr_free (&blob_path);
+        zstr_free (&blob_fullpath);
+    }
+    else
+        plucked = nmaya_arrangement_new("*/*", zchunk_new(NULL,0));
+    
+    // TOFIX free string
+    //zstr_free(search_key);
+    zlistx_destroy (&keys);
+    zlist_destroy(&files);
+    zdir_destroy(&directory);
+    zfile_destroy(&file);
+    // zconfig_destroy segfaults
+    // zconfig_destroy(&post);
+    zhashx_destroy(&arrangement_index);
+    return plucked;
+
 }
 
 //  --------------------------------------------------------------------------
@@ -78,8 +153,19 @@ nmaya_test (bool verbose)
 
     //  @selftest
     //  Simple create/destroy test
-    nmaya_t *self = nmaya_new ();
+    // cp -r ../hii/.hyda .
+    nmaya_t *self = nmaya_new (".hydra/posts");
     assert (self);
+    nmaya_arrangement_t *thing = nmaya_pluck (self,"/post/subject",0);
+    assert (streq (nmaya_arrangement_mime_type (thing), "image/jpeg"));
+    // zchunk_t *content = nmaya_arrangement_content (thing);
+    // printf ("%s", zchunk_strhex (content));
+    nmaya_arrangement_t *another_thing = nmaya_pluck (self,"/post/subject",1001);
+    assert (streq (nmaya_arrangement_mime_type (another_thing), "*/*"));
+
+    // zchunk_destroy (&content);
+    nmaya_arrangement_destroy(&thing);
+    nmaya_arrangement_destroy(&another_thing);
     nmaya_destroy (&self);
     //  @end
     printf ("OK\n");
