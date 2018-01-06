@@ -64,6 +64,12 @@ src_nmaya_selftest_LDADD = ${program_libs}
 src_nmaya_selftest_SOURCES = src/nmaya_selftest.c
 endif #ENABLE_NMAYA_SELFTEST
 
+# Install api files into /usr/local/share/zproject
+apidir = @datadir@/zproject/nmaya
+dist_api_DATA = \
+    api/nmaya.api \
+    api/nmaya_arrangement.api
+
 # define custom target for all products of /src
 src: \
 		src/nmaya_selftest \
