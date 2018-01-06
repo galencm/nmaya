@@ -131,6 +131,17 @@ nmaya_arrangement_t *
 }
 
 //  --------------------------------------------------------------------------
+//  Return the nmaya version for run-time API detection
+
+void
+nmaya_version (int *major, int *minor, int *patch)
+{
+    *major = NMAYA_VERSION_MAJOR;
+    *minor = NMAYA_VERSION_MINOR;
+    *patch = NMAYA_VERSION_PATCH;
+}
+
+//  --------------------------------------------------------------------------
 //  Self test of this class
 
 // If your selftest reads SCMed fixture data, please keep it in
