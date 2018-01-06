@@ -7,6 +7,7 @@ from __future__ import print_function
 import os, sys
 from ctypes import *
 from ctypes.util import find_library
+import czmq
 
 # nmaya
 lib = None
@@ -56,8 +57,6 @@ lib.nmaya_new.restype = nmaya_p
 lib.nmaya_new.argtypes = [c_char_p]
 lib.nmaya_destroy.restype = None
 lib.nmaya_destroy.argtypes = [POINTER(nmaya_p)]
-lib.nmaya_start.restype = c_int
-lib.nmaya_start.argtypes = [nmaya_p]
 lib.nmaya_pluck.restype = nmaya_arrangement_p
 lib.nmaya_pluck.argtypes = [nmaya_p, c_char_p, c_int]
 lib.nmaya_version.restype = None
@@ -113,13 +112,6 @@ class Nmaya(object):
         "Determine whether the object is valid by converting to boolean" # Python 2
         return self._as_parameter_.__nonzero__()
 
-    def start(self):
-        """
-        Start node.
-Returns 0 if OK, -1 if it wasn't possible to start the node.
-        """
-        return lib.nmaya_start(self._as_parameter_)
-
     def pluck(self, arrangement_key, position):
         """
         Return specic item from specified arrangement
@@ -143,9 +135,13 @@ Returns 0 if OK, -1 if it wasn't possible to start the node.
 
 # nmaya_arrangement
 lib.nmaya_arrangement_new.restype = nmaya_arrangement_p
-lib.nmaya_arrangement_new.argtypes = []
+lib.nmaya_arrangement_new.argtypes = [c_char_p, czmq.zchunk_p]
 lib.nmaya_arrangement_destroy.restype = None
 lib.nmaya_arrangement_destroy.argtypes = [POINTER(nmaya_arrangement_p)]
+lib.nmaya_arrangement_mime_type.restype = c_char_p
+lib.nmaya_arrangement_mime_type.argtypes = [nmaya_arrangement_p]
+lib.nmaya_arrangement_content.restype = czmq.zchunk_p
+lib.nmaya_arrangement_content.argtypes = [nmaya_arrangement_p]
 lib.nmaya_arrangement_test.restype = None
 lib.nmaya_arrangement_test.argtypes = [c_bool]
 
@@ -166,8 +162,8 @@ class NmayaArrangement(object):
             self._as_parameter_ = args[0] # Conversion from raw type to binding
             self.allow_destruct = args[1] # This is a 'fresh' value, owned by us
         else:
-            assert(len(args) == 0)
-            self._as_parameter_ = lib.nmaya_arrangement_new() # Creation of new raw type
+            assert(len(args) == 2)
+            self._as_parameter_ = lib.nmaya_arrangement_new(args[0], args[1]) # Creation of new raw type
             self.allow_destruct = True
 
     def __del__(self):
@@ -196,6 +192,19 @@ class NmayaArrangement(object):
     def __nonzero__(self):
         "Determine whether the object is valid by converting to boolean" # Python 2
         return self._as_parameter_.__nonzero__()
+
+    def mime_type(self):
+        """
+        Return mime_type
+        """
+        return lib.nmaya_arrangement_mime_type(self._as_parameter_)
+
+    def content(self):
+        """
+        Returns the content, and pass ownership to the
+caller. The caller must destroy the content when finished with it.
+        """
+        return czmq.Zchunk(lib.nmaya_arrangement_content(self._as_parameter_), True)
 
     @staticmethod
     def test(verbose):

@@ -1,5 +1,5 @@
 /*  =========================================================================
-    nmaya_arrangement - arrangement of stuff
+    nmaya_arrangement - A library for arranging stuff
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of zbroker, the ZeroMQ broker project.
@@ -34,12 +34,14 @@ NMAYA_EXPORT void
 
 //  *** Draft method, for development use, may change without warning ***
 //  Return mime_type
-const char *
+NMAYA_EXPORT const char *
     nmaya_arrangement_mime_type (nmaya_arrangement_t *self);
 
 //  *** Draft method, for development use, may change without warning ***
-//  Return content
-zchunk_t *
+//  Returns the content, and pass ownership to the
+//  caller. The caller must destroy the content when finished with it.
+//  Caller owns return value and must destroy it when done.
+NMAYA_EXPORT zchunk_t *
     nmaya_arrangement_content (nmaya_arrangement_t *self);
 
 //  *** Draft method, for development use, may change without warning ***

@@ -36,12 +36,6 @@ NMAYA_EXPORT void
     nmaya_destroy (nmaya_t **self_p);
 
 //  *** Draft method, for development use, may change without warning ***
-//  Start node.
-//  Returns 0 if OK, -1 if it wasn't possible to start the node.
-// NMAYA_EXPORT int
-//     nmaya_start (nmaya_t *self);
-
-//  *** Draft method, for development use, may change without warning ***
 //  Return specic item from specified arrangement
 //  Caller owns return value and must destroy it when done.
 NMAYA_EXPORT nmaya_arrangement_t *
