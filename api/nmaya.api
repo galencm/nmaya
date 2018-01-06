@@ -1,0 +1,42 @@
+<class name = "nmaya">
+    <!--
+    Copyright (c) the Contributors as noted in the AUTHORS file.
+
+    This file is part of Nmaya
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+    -->
+    A library for arranging stuff
+
+    <constructor>
+        Constructor, creates a new Nmaya node.
+        <argument name = "directory" type = "string" />
+    </constructor>
+
+    <destructor>
+        Destructor, destroys a Nmaya node.
+    </destructor>
+
+    <method name = "start">
+        Start node. 
+        Returns 0 if OK, -1 if it wasn't possible to start the node.
+        <return type = "integer" />
+    </method>
+
+    <method name = "pluck">
+        Return specic item from specified arrangement
+        <argument name = "arrangement key" type = "string" />
+        <argument name = "position" type = "integer" />
+        <return type = "nmaya_arrangement" fresh = "1" />
+    </method>
+
+    <method name = "version" singleton = "1">
+        Return the Nmaya version for run-time API detection
+        <argument name = "major" type = "integer" by_reference = "1" />
+        <argument name = "minor" type = "integer" by_reference = "1" />
+        <argument name = "patch" type = "integer" by_reference = "1" />
+    </method>
+
+</class>

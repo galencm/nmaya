@@ -1,0 +1,31 @@
+<class name = "nmaya_arrangement">
+    <!--
+    Copyright (c) the Contributors as noted in the AUTHORS file.
+
+    This file is part of Nmaya
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+    -->
+    A library for arranging stuff
+    <constructor>
+        Create a new arrangement
+    </constructor>
+    
+    <destructor>
+        Destroy the arrangement
+    </destructor>
+    
+    <mime_type>
+        Return mime_type
+        <return type = "string" />
+    </mime_type>
+
+    <content>
+        Returns the content, and pass ownership to the
+        caller. The caller must destroy the content when finished with it.
+        <return type = "zchunk" fresh = "1" />
+    </content>
+
+</class>
