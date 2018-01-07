@@ -46,3 +46,15 @@ Remove CPPFLAGS -Werror flag from Makefile:
 
 `make check` looks for a .hydra directory with at least 1 post and 1 image blob:
 `cp -r /path/to/.hydra .`
+
+## Contribute
+
+This project uses the C4 process
+
+https://rfc.zeromq.org/spec:42/C4/
+
+## License
+
+Mozilla Public License, v. 2.0
+
+http://mozilla.org/MPL/2.0/
